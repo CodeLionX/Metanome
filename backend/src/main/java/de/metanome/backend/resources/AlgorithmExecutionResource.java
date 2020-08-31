@@ -317,12 +317,20 @@ public class AlgorithmExecutionResource {
     String className = algorithmExecutionClass.getCanonicalName();
 
     try {
+      // add jars from lib folder and files in classes folder to classpath
       URL baseUrl = algorithmExecutionClass.getProtectionDomain().getCodeSource().getLocation();
       File file = new File(baseUrl.toURI());
       String webinf = file.getAbsoluteFile().getParentFile().getParent() + Constants.FILE_SEPARATOR;
       String classesFolder = webinf + "classes";
       String parentPathWildCard = webinf + "lib" + Constants.FILE_SEPARATOR + "*";
       myPath += File.pathSeparator + parentPathWildCard + File.pathSeparator + classesFolder;
+
+      // add the algorithm jar to classpath
+      AlgorithmResource algorithmResource = new AlgorithmResource();
+      de.metanome.backend.results_db.Algorithm algorithm = algorithmResource.get(Long.parseLong(algorithmId));
+      String algorithmJarfile = classesFolder + Constants.FILE_SEPARATOR + "algorithms" + Constants.FILE_SEPARATOR + algorithm.getFileName();
+      myPath += File.pathSeparator + algorithmJarfile;
+      System.out.println("Path of the algorithm executor process: " + myPath);
     } catch (URISyntaxException ex) {
       ex.printStackTrace();
     }
