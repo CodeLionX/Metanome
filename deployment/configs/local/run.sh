@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 echo "This script does not support Microsoft Windows please use the run.bat script.\n"
 
 trap 'kill %1' SIGINT
