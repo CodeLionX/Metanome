@@ -31,6 +31,7 @@ public class MatchingIdentifier implements Comparable<MatchingIdentifier>, Seria
           + Pattern.quote(IDENTIFIER_SEPARATOR) + "(.*)"
           + Pattern.quote(SIMILARITY_SEPARATOR) + "(.*)"
           + Pattern.quote(THRESHOLD_SEPARATOR) + "(.*)");
+  private static final long serialVersionUID = 7254445850853709882L;
 
   private ColumnIdentifier left;
   private ColumnIdentifier right;

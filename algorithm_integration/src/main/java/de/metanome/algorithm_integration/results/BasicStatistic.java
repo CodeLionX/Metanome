@@ -41,7 +41,7 @@ public class BasicStatistic implements Result {
   private static final long serialVersionUID = -8010850754433867718L;
 
   protected ColumnCombination columnCombination;
-  protected Map<String, BasicStatisticValue> statisticMap;
+  protected Map<String, BasicStatisticValue<?>> statisticMap;
 
   /**
    * Exists for serialization.
@@ -65,7 +65,7 @@ public class BasicStatistic implements Result {
    * @param statisticMap     the statistics
    * @param columnIdentifier the column identifiers
    */
-  public BasicStatistic(Map<String, BasicStatisticValue> statisticMap, ColumnIdentifier... columnIdentifier) {
+  public BasicStatistic(Map<String, BasicStatisticValue<?>> statisticMap, ColumnIdentifier... columnIdentifier) {
     this.columnCombination = new ColumnCombination(columnIdentifier);
     this.statisticMap = statisticMap;
   }
@@ -75,7 +75,7 @@ public class BasicStatistic implements Result {
    * @param statisticName  the name of the statistic
    * @param statisticValue the value of the statistic
    */
-  public void addStatistic(String statisticName, BasicStatisticValue statisticValue) {
+  public void addStatistic(String statisticName, BasicStatisticValue<?> statisticValue) {
     this.statisticMap.put(statisticName, statisticValue);
   }
 
@@ -90,7 +90,7 @@ public class BasicStatistic implements Result {
     this.columnCombination = columnCombination;
   }
 
-  public Map<String, BasicStatisticValue> getStatisticMap() {
+  public Map<String, BasicStatisticValue<?>> getStatisticMap() {
     return statisticMap;
   }
 
@@ -98,7 +98,7 @@ public class BasicStatistic implements Result {
    * Sets the statistics of the result.
    * @param statisticMap the statistic map containing all statistics
    */
-    public void setStatisticMap(Map<String, BasicStatisticValue> statisticMap) {
+    public void setStatisticMap(Map<String, BasicStatisticValue<?>> statisticMap) {
     this.statisticMap = statisticMap;
   }
 
@@ -111,13 +111,16 @@ public class BasicStatistic implements Result {
 
   @Override
   public String toString() {
-    String str = columnCombination.toString() + COLUMN_VALUE_SEPARATOR;
+    StringBuilder str = new StringBuilder(columnCombination.toString() + COLUMN_VALUE_SEPARATOR);
 
-    for (Map.Entry<String, BasicStatisticValue> entry : this.statisticMap.entrySet()) {
-      str += entry.getKey() + NAME_COLUMN_SEPARATOR + entry.getValue() + STATISTIC_SEPARATOR;
+    for (Map.Entry<String, BasicStatisticValue<?>> entry : this.statisticMap.entrySet()) {
+      str.append(entry.getKey())
+              .append(NAME_COLUMN_SEPARATOR)
+              .append(entry.getValue())
+              .append(STATISTIC_SEPARATOR);
     }
 
-    return str;
+    return str.toString();
   }
 
   @Override
@@ -149,10 +152,7 @@ public class BasicStatistic implements Result {
     } else if (!columnCombination.equals(other.columnCombination)) {
       return false;
     }
-    if (!this.statisticMap.equals(other.statisticMap)) {
-      return false;
-    }
-    return true;
+    return this.statisticMap.equals(other.statisticMap);
   }
 
 }

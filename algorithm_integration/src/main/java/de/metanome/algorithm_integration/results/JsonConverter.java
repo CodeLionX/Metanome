@@ -79,7 +79,7 @@ public class JsonConverter<T> {
    * @param mixIn  mixin class
    */
   public void addMixIn(Class<?> target, Class<?> mixIn) {
-    this.mapper.addMixInAnnotations(target, mixIn);
+    this.mapper.addMixIn(target, mixIn);
   }
 
 }
